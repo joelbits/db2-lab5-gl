@@ -1,0 +1,23 @@
+
+
+#### Databases 2 - Uppsala University VT2018
+### Lab 5 - SQL Transactions
+
+## Usage:
+```
+docker-compose up -d --build
+```
+
+Then browse to http://localhost:8181 for phpMyAdmin.
+lab5:lab5 as login. 
+
+Click lab5 DB in left menu, then SQL tab and insert queries from mysql/src.sql .
+
+OR from command line:
+```
+docker exec -it db2-lab5 bash
+THEN:
+mysql -ulab5 -plab5 lab5 < /scripts/c_src.sql
+OR simply:
+docker exec -it db2-lab5 mysql -ulab5 -plab5 lab5 < /scripts/c_src.sql
+```

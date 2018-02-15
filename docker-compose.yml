@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mysql:
+    container_name: db2-lab5
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+      args:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+      - "mysql_scripts:/scripts"
+    # For Linux this is better:
+      #- "./data:/var/lib/mysql"
+      #- "./scripts:/scripts"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: db2-lab5-admin
+    links:
+      - "mysql:db"
+    ports:
+      - "${PHP_ADMIN_PORT}:80"
+volumes:
+  mysql_data:
+  mysql_scripts:
