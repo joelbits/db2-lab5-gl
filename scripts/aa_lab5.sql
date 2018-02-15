@@ -15,17 +15,17 @@ DROP TABLE IF EXISTS owners;
 
 -- TODO: Optimize, add keys etc
 create table users (
-	id 			int primary key auto_increment,
+	id 			int NOT NULL primary key auto_increment,
 	name 	    varchar(50)
 );
 
 create table accounts (
-    id          int primary key auto_increment,
+    id          int NOT NULL primary key auto_increment,
     amount      int
 );
 
 create table transfers (
-    id          int primary key auto_increment,
+    id          int NOT NULL primary key auto_increment,
     from_account_id     int,
     to_account_id       int,
     amount              int,
@@ -34,8 +34,10 @@ create table transfers (
 );
 
 create table owners (
-    user_id         int primary key,
-    account_id      int
+    user_id         int NOT NULL primary key,
+    account_id      int NOT NULL,
+    foreign key (user_id) references users(id),
+    foreign key (account_id) references accounts(id)
 );
 
 -- Lab 5 - 1 - Usage:
@@ -50,7 +52,37 @@ Skriv queries för att fylla på med minst 5 användare med minst
 två konton vardera. Välj slumpade värden för belopp som finns
 för konton. Gör så att minst 5 konton har mer än en ägare. */
 INSERT INTO users (name) VALUES("Adam Andersson");
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (1, last_insert_id());
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (1, last_insert_id());
+
 INSERT INTO users (name) VALUES("Bernt Berntsson");
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (2, last_insert_id());
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (2, last_insert_id());
+
 INSERT INTO users (name) VALUES("Cesar Cykel");
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (3, last_insert_id());
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (3, last_insert_id());
+
 INSERT INTO users (name) VALUES("David Dansk");
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (4, last_insert_id());
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (4, last_insert_id());
+
 INSERT INTO users (name) VALUES("Erik Eriksson");
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (5, last_insert_id());
+INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 1000);
+INSERT INTO owners (user_id, account_id) VALUES (5, last_insert_id());
+
+-- Lab 5 - 2 - Usage:
+SELECT * FROM users;
+SELECT * FROM accounts;
+SELECT * FROM owners;
+
