@@ -34,8 +34,10 @@ create table transfers (
 );
 
 create table owners (
-    user_id         int NOT NULL primary key,
+    user_id         int NOT NULL,
     account_id      int NOT NULL,
+    INDEX(user_id),
+    INDEX(account_id),
     foreign key (user_id) references users(id),
     foreign key (account_id) references accounts(id)
 );
