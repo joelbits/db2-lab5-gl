@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS transfers;
 DROP TABLE IF EXISTS owners;
 
+-- TODO: Optimize, add keys etc
 create table users (
 	id 			int primary key auto_increment,
 	name 	    varchar(50)
