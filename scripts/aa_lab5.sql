@@ -2,7 +2,11 @@
 use lab5;
 
 /* Lab 5 - 1
-Skriv queries för att skapa en databas och tabeller för att hantera personer som har konton med pengar. Konton ska kunna ha en eller flera innehavare, värdet av pengar på kontot får aldrig hamna på mindre än noll. Använd lämpliga datatyper, nycklar, index och foreign keys där det passar. Tabellerna och kolumner ska vara:
+Skriv queries för att skapa en databas och tabeller för att hantera 
+personer som har konton med pengar. Konton ska kunna ha en eller 
+flera innehavare, värdet av pengar på kontot får aldrig hamna på 
+mindre än noll. Använd lämpliga datatyper, nycklar, index och 
+foreign keys där det passar. Tabellerna och kolumner ska vara:
 a) Users (id, name)
 b) Accounts (id, amount)
 c) Transfers (id, from_account_id, to_account_id, amount, note, datetime)
@@ -13,24 +17,27 @@ DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS transfers;
 DROP TABLE IF EXISTS owners;
 
--- TODO: Optimize, add keys etc
+-- TODO: Optimize
 create table users (
 	id 			int NOT NULL primary key auto_increment,
-	name 	    varchar(50)
+	name 	    varchar(50) NOT NULL,
+    INDEX(name)
 );
 
 create table accounts (
     id          int NOT NULL primary key auto_increment,
-    amount      int
+    amount      int NOT NULL
 );
 
 create table transfers (
     id          int NOT NULL primary key auto_increment,
-    from_account_id     int,
-    to_account_id       int,
-    amount              int,
+    from_account_id     int NOT NULL,
+    to_account_id       int NOT NULL,
+    amount              int NOT NULL,
     note                text,
-    datetime            datetime
+    datetime            datetime NOT NULL,
+    foreign key (from_account_id) references accounts(id),
+    foreign key (to_account_id) references accounts(id)
 );
 
 create table owners (
@@ -43,10 +50,12 @@ create table owners (
 );
 
 -- Lab 5 - 1 - Usage:
-SHOW create table users;
-SHOW create table accounts;
-SHOW create table transfers;
-SHOW create table owners;
+/* 
+SHOW create table users PROCEDURE ANALYSE;
+SHOW create table accounts PROCEDURE ANALYSE;
+SHOW create table transfers PROCEDURE ANALYSE;
+SHOW create table owners PROCEDURE ANALYSE;
+*/
 
 
 /* Lab 5 - 2
@@ -84,7 +93,9 @@ INSERT INTO accounts (amount) VALUES (FLOOR(RAND() * (1000000 - 1000 + 1)) + 100
 INSERT INTO owners (user_id, account_id) VALUES (5, last_insert_id());
 
 -- Lab 5 - 2 - Usage:
+/*
 SELECT * FROM users;
 SELECT * FROM accounts;
 SELECT * FROM owners;
+*/
 
