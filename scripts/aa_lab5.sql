@@ -44,3 +44,13 @@ SHOW create table accounts;
 SHOW create table transfers;
 SHOW create table owners;
 
+
+/* Lab 5 - 2
+Skriv queries för att fylla på med minst 5 användare med minst
+två konton vardera. Välj slumpade värden för belopp som finns
+för konton. Gör så att minst 5 konton har mer än en ägare. */
+INSERT INTO users (name) VALUES("Adam Andersson");
+INSERT INTO users (name) VALUES("Bernt Berntsson");
+INSERT INTO users (name) VALUES("Cesar Cykel");
+INSERT INTO users (name) VALUES("David Dansk");
+INSERT INTO users (name) VALUES("Erik Eriksson");
