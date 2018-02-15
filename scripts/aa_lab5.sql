@@ -21,7 +21,7 @@ create table users (
 create table accounts (
     id          int primary key auto_increment,
     amount      int
-)
+);
 
 create table transfers (
     id          int primary key auto_increment,
@@ -30,12 +30,12 @@ create table transfers (
     amount              int,
     note                text,
     datetime            datetime
-)
+);
 
 create table owners (
     user_id         int primary key,
     account_id      int
-)
+);
 
 -- Lab 5 - 1 - Usage:
 SHOW create table users;
