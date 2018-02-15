@@ -17,22 +17,21 @@ DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS transfers;
 DROP TABLE IF EXISTS owners;
 
--- TODO: Optimize
 create table users (
-	id 			int NOT NULL primary key auto_increment,
+	id 			SMALLINT NOT NULL primary key auto_increment,
 	name 	    varchar(50) NOT NULL,
     INDEX(name)
 );
 
 create table accounts (
-    id          int NOT NULL primary key auto_increment,
+    id          SMALLINT NOT NULL primary key auto_increment,
     amount      int NOT NULL
 );
 
 create table transfers (
-    id          int NOT NULL primary key auto_increment,
-    from_account_id     int NOT NULL,
-    to_account_id       int NOT NULL,
+    id          MEDIUMINT NOT NULL primary key auto_increment,
+    from_account_id     SMALLINT NOT NULL,
+    to_account_id       SMALLINT NOT NULL,
     amount              int NOT NULL,
     note                text,
     datetime            datetime NOT NULL,
@@ -41,8 +40,8 @@ create table transfers (
 );
 
 create table owners (
-    user_id         int NOT NULL,
-    account_id      int NOT NULL,
+    user_id         SMALLINT NOT NULL,
+    account_id      SMALLINT NOT NULL,
     INDEX(user_id),
     INDEX(account_id),
     foreign key (user_id) references users(id),
@@ -51,10 +50,10 @@ create table owners (
 
 -- Lab 5 - 1 - Usage:
 /* 
-SHOW create table users PROCEDURE ANALYSE;
-SHOW create table accounts PROCEDURE ANALYSE;
-SHOW create table transfers PROCEDURE ANALYSE;
-SHOW create table owners PROCEDURE ANALYSE;
+SHOW create table users;
+SHOW create table accounts;
+SHOW create table transfers;
+SHOW create table owners;
 */
 
 
