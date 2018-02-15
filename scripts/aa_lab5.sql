@@ -98,3 +98,19 @@ SELECT * FROM accounts;
 SELECT * FROM owners;
 */
 
+
+/* Lab 5 - 3 - Usage:
+Skriv queries för att skapa en procedure, 
+transfer(amount, note, from_account, to_account), 
+som för över pengar från ett konto till ett annat. 
+Varje överföring ska ha en kort anteckning på max 50 tecken och 
+dagens datum samt klockslag. Använd TRANSACTION och COMMIT så att det 
+inte kan bli fel vid överföringen. Som sista steg i din procedure ska 
+det göras en SELECT som visar överföringen. */
+DROP PROCEDURE IF EXISTS transfer;
+DELIMITER //
+CREATE PROCEDURE transfer(amount, note, from_account, to_account)
+BEGIN
+
+END //
+DELIMITER ;
