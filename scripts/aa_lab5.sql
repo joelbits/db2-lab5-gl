@@ -142,3 +142,27 @@ id      amount
 1       135312
 3       11024  
 */
+
+
+
+/* Lab 5 - 4 
+Skriv queries för att skapa en procedure, show_transfers(account_id), 
+som listar alla transfers för ett angivet konto sorterade på datum och tid. */
+-- use lab5;
+DROP PROCEDURE IF EXISTS show_transfers;
+DELIMITER //
+CREATE PROCEDURE show_transfers(IN account_id SMALLINT)
+BEGIN
+    SELECT * FROM transfers
+    WHERE from_account_id = account_id OR to_account_id = account_id
+    ORDER BY datetime ASC;
+END //
+DELIMITER ;
+
+/* Lab 5 - 4 - Usage: 
+call show_transfers(1);
+returns:
+id 	from_account_id 	to_account_id 	amount 	note 	            datetime 	
+1	1	                3	            1337	Transfer text...	2018-02-16 08:27:51
+2	1	                3	            13337	Transfer text 2!	2018-02-16 08:43:02
+*/
