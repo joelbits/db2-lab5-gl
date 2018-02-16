@@ -107,7 +107,7 @@ Varje överföring ska ha en kort anteckning på max 50 tecken och
 dagens datum samt klockslag. Använd TRANSACTION och COMMIT så att det 
 inte kan bli fel vid överföringen. Som sista steg i din procedure ska 
 det göras en SELECT som visar överföringen. */
-use lab5;
+-- use lab5;
 DROP PROCEDURE IF EXISTS transfer;
 DELIMITER //
 CREATE PROCEDURE transfer(IN inamount INT, IN innote TEXT, IN infrom_account SMALLINT, IN into_account SMALLINT)
