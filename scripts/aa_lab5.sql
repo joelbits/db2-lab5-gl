@@ -98,3 +98,47 @@ SELECT * FROM accounts;
 SELECT * FROM owners;
 */
 
+
+/* Lab 5 - 3 - Usage:
+Skriv queries för att skapa en procedure, 
+transfer(amount, note, from_account, to_account), 
+som för över pengar från ett konto till ett annat. 
+Varje överföring ska ha en kort anteckning på max 50 tecken och 
+dagens datum samt klockslag. Använd TRANSACTION och COMMIT så att det 
+inte kan bli fel vid överföringen. Som sista steg i din procedure ska 
+det göras en SELECT som visar överföringen. */
+use lab5;
+DROP PROCEDURE IF EXISTS transfer;
+DELIMITER //
+CREATE PROCEDURE transfer(IN inamount INT, IN innote TEXT, IN infrom_account SMALLINT, IN into_account SMALLINT)
+BEGIN
+    declare fr_amount int;
+    SELECT amount FROM accounts WHERE id = infrom_account AND amount > inamount INTO fr_amount; 
+    if (fr_amount > 0) THEN
+        -- Update accounts set amount for TO account
+        UPDATE accounts SET amount = amount + inamount WHERE id = into_account;
+        -- Add new transfer to transfers table.
+        INSERT INTO transfers (amount, note, from_account_id, to_account_id, datetime)            VALUES (inamount, innote, infrom_account, into_account, TIMESTAMP(NOW()));
+        -- Update accounts set amount for FROM account
+        UPDATE accounts a SET a.amount = (a.amount - inamount) WHERE id = infrom_account;
+    end if;
+END //
+DELIMITER ;
+
+/* Lab 5 - 3 - Usage:
+SELECT * FROM `accounts` WHERE id = 1;
+SELECT * FROM `accounts` WHERE id = 3;
+returns:
+id      amount
+1       136649
+3       9687
+
+call transfer(1337, "Transfer text...", 1, 3);
+
+SELECT * FROM `accounts` WHERE id = 1;
+SELECT * FROM `accounts` WHERE id = 3;
+Should return:
+id      amount
+1       135312
+3       11024  
+*/
