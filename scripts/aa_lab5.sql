@@ -167,3 +167,20 @@ id 	from_account_id 	to_account_id 	amount 	note 	            datetime
 2	1	                3	            13337	Transfer text 2!	2018-02-16 08:43:02
 */
 
+
+/* Lab 5 - 5
+Skriv queries för att skapa en procedure, 
+change_ownership(from_user_id, to_user_id, account_id), 
+som byter ägare på ett konto. 
+Använd TRANSACTION och COMMIT så att det inte kan bli fel vid överföringen.
+(OBS! Koden måste kontrollera så att from_user verkligen är ägare till kontot.) 
+Avsluta med ett SELECT @status och låt @status vara meddelande 
+om "Success!" eller "Denied!" som sätts i din procedure. */
+-- use lab5;
+DROP PROCEDURE IF EXISTS change_ownership;
+DELIMITER //
+CREATE PROCEDURE change_ownership(IN from_user_id SMALLINT, IN to_user_id SMALLINT, IN account_id SMALLINT)
+BEGIN
+    
+END //
+DELIMITER ;
