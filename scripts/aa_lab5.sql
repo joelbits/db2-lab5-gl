@@ -179,17 +179,19 @@ om "Success!" eller "Denied!" som sätts i din procedure. */
 
 /* Usage:
 
-call change_ownership(1, 2, 1); -- Returns:
-
+call change_ownership(1, 2, 1); 
 @status
 Success!
 
-call change_ownership(1, 2, 1); -- This time, returns:
+SELECT * FROM owners WHERE account_id = 1;
+user_id     account_id
+2           1
 
+call change_ownership(1, 2, 1);
 @status
 Denied!
 
--- select @status; works after the call
+-- select @status;  works after the call
 
 */
 
@@ -199,6 +201,8 @@ DELIMITER //
 CREATE PROCEDURE change_ownership(IN from_user_id SMALLINT, IN to_user_id SMALLINT, IN account_id SMALLINT)
 BEGIN
     set @status := "Denied!"; -- Result of this procedure
+
+    START TRANSACTION; -- Start of transaction
 
     -- Check if account really belongs to from_user_id
     IF ( SELECT user_id from owners o 
@@ -223,7 +227,10 @@ BEGIN
             END;
             END IF;
         END;
-    END IF;
-    SELECT @status;
+    END IF; -- End check if account really belongs to from_user_id
+
+    COMMIT; -- End of transaction. Now we commit the transactions to the db.
+
+    SELECT @status; -- "Returns" @status as result. @status Can be used later
 END //
 DELIMITER ;
