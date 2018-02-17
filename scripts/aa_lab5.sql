@@ -176,11 +176,54 @@ Använd TRANSACTION och COMMIT så att det inte kan bli fel vid överföringen.
 (OBS! Koden måste kontrollera så att from_user verkligen är ägare till kontot.) 
 Avsluta med ett SELECT @status och låt @status vara meddelande 
 om "Success!" eller "Denied!" som sätts i din procedure. */
+
+/* Usage:
+
+call change_ownership(1, 2, 1); -- Returns:
+
+@status
+Success!
+
+call change_ownership(1, 2, 1); -- This time, returns:
+
+@status
+Denied!
+
+-- select @status; works after the call
+
+*/
+
 -- use lab5;
 DROP PROCEDURE IF EXISTS change_ownership;
 DELIMITER //
 CREATE PROCEDURE change_ownership(IN from_user_id SMALLINT, IN to_user_id SMALLINT, IN account_id SMALLINT)
 BEGIN
-    
+    set @status := "Denied!"; -- Result of this procedure
+
+    -- Check if account really belongs to from_user_id
+    IF ( SELECT user_id from owners o 
+        WHERE o.user_id = from_user_id 
+        AND o.account_id = account_id ) 
+        THEN BEGIN
+            declare own_bef_change SMALLINT;
+            declare own_aft_change SMALLINT;
+
+            -- Gets user_id of account_id before any changes
+            SELECT user_id FROM owners oo WHERE oo.account_id = account_id INTO @own_bef_change;
+
+            -- Update owners info, set account_id owner user_id to to_user_id
+            UPDATE owners ooo SET ooo.user_id = to_user_id WHERE ooo.account_id = account_id;
+
+            -- Get user_id from account_id after updated owner of account
+            SELECT user_id FROM owners oooo WHERE oooo.account_id = account_id INTO @own_aft_change;
+
+            -- If owner of acc before change IS NOT same as after change
+            IF (@own_bef_change <> @own_aft_change) THEN BEGIN
+                SET @status := "Success!";
+            END;
+            END IF;
+        END;
+    END IF;
+    SELECT @status;
 END //
 DELIMITER ;
