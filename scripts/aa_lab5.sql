@@ -10,8 +10,7 @@ foreign keys där det passar. Tabellerna och kolumner ska vara:
 a) Users (id, name)
 b) Accounts (id, amount)
 c) Transfers (id, from_account_id, to_account_id, amount, note, datetime)
-d) Owners (user_id, account_id)
-*/
+d) Owners (user_id, account_id)         */
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS transfers;
@@ -108,6 +107,7 @@ dagens datum samt klockslag. Använd TRANSACTION och COMMIT så att det
 inte kan bli fel vid överföringen. Som sista steg i din procedure ska 
 det göras en SELECT som visar överföringen. */
 -- use lab5;
+-- TODO: TRANSACTION AND COMMIT!!!
 DROP PROCEDURE IF EXISTS transfer;
 DELIMITER //
 CREATE PROCEDURE transfer(IN inamount INT, IN innote TEXT, IN infrom_account SMALLINT, IN into_account SMALLINT)
@@ -145,11 +145,9 @@ id      amount
 */
 
 
-
 /* Lab 5 - 4 
 Skriv queries för att skapa en procedure, show_transfers(account_id), 
 som listar alla transfers för ett angivet konto sorterade på datum och tid. */
--- use lab5;
 DROP PROCEDURE IF EXISTS show_transfers;
 DELIMITER //
 CREATE PROCEDURE show_transfers(IN account_id SMALLINT)
@@ -178,25 +176,6 @@ Använd TRANSACTION och COMMIT så att det inte kan bli fel vid överföringen.
 Avsluta med ett SELECT @status och låt @status vara meddelande 
 om "Success!" eller "Denied!" som sätts i din procedure. */
 
-/* Usage:
-
-call change_ownership(1, 2, 1); 
-@status
-Success!
-
-SELECT * FROM owners WHERE account_id = 1;
-user_id     account_id
-2           1
-
-call change_ownership(1, 2, 1);
-@status
-Denied!
-
--- select @status;  works after the call
-
-*/
-
--- use lab5;
 DROP PROCEDURE IF EXISTS change_ownership;
 DELIMITER //
 CREATE PROCEDURE change_ownership(IN from_user_id SMALLINT, IN to_user_id SMALLINT, IN account_id SMALLINT)
@@ -236,6 +215,24 @@ BEGIN
 END //
 DELIMITER ;
 
+/* Lab 5 - 5 - Usage:
+
+call change_ownership(1, 2, 1); 
+@status
+Success!
+
+SELECT * FROM owners WHERE account_id = 1;
+user_id     account_id
+2           1
+
+call change_ownership(1, 2, 1);
+@status
+Denied!
+
+-- select @status;  works after the call
+
+*/
+
 
 /* Lab 5 - 6
 Skriv queries för att: (1) starta en transaktion, (2) göra en UPDATE, 
@@ -259,6 +256,7 @@ ROLLBACK TO p_initial;
 
 -- (6) göra en COMMIT.
 COMMIT;
+
 
 /* Lab 5 - 6 - Usage:
 
@@ -292,7 +290,6 @@ CREATE USER 'app'@'localhost' IDENTIFIED BY 'badpassword';
 
 /* b) Ge alla access (GRANT) så de kan göra SELECT och UPDATE på alla tabeller
         i DB för denna laboration   */
-
 GRANT SELECT, UPDATE ON `lab5`.* TO 'kim'@'localhost';
 GRANT SELECT, UPDATE ON `lab5`.`accounts` TO 'kim'@'localhost';
 GRANT SELECT, UPDATE ON `lab5`.`owners` TO 'kim'@'localhost';
