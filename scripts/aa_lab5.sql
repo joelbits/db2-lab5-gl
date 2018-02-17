@@ -235,3 +235,27 @@ BEGIN
     SELECT @status; -- "Returns" @status as result. @status Can be used later
 END //
 DELIMITER ;
+
+
+/* Lab 5 - 6
+Skriv queries för att: (1) starta en transaktion, (2) göra en UPDATE, (3) sätta en SAVEPOINT, 
+(4) göra en UPDATE, (5) göra en ROLLBACK till savepoint, (6) en göra COMMIT. */
+
+-- (1) starta en transaktion
+START TRANSACTION;
+
+-- (2) göra en UPDATE
+
+-- (3) sätta en SAVEPOINT
+
+-- (4) göra en UPDATE
+
+-- (5) göra en ROLLBACK till savepoint
+
+-- (6) en göra COMMIT.
+
+/* Lab 5 - 6 - Usage:
+
+
+
+*/
