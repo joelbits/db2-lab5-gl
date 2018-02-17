@@ -235,3 +235,37 @@ BEGIN
     SELECT @status; -- "Returns" @status as result. @status Can be used later
 END //
 DELIMITER ;
+
+
+/* Lab 5 - 6
+Skriv queries för att: (1) starta en transaktion, (2) göra en UPDATE, (3) sätta en SAVEPOINT, 
+(4) göra en UPDATE, (5) göra en ROLLBACK till savepoint, (6) en göra COMMIT. */
+
+-- (1) starta en transaktion
+START TRANSACTION; -- Auto-commit mode off
+
+-- (2) göra en UPDATE
+UPDATE `owners` SET `user_id` = 5 WHERE `account_id` = 1;
+
+-- (3) sätta en SAVEPOINT
+SAVEPOINT p_initial;
+
+-- (4) göra en UPDATE
+UPDATE `owners` SET `user_id` = 3 WHERE `account_id` = 1;
+
+-- (5) göra en ROLLBACK till savepoint
+ROLLBACK TO p_initial;
+
+-- (6) göra en COMMIT.
+COMMIT;
+
+/* Lab 5 - 6 - Usage:
+
+Above will finally result in the below. Step (4) is rolled-back, hence did not affect the table final outcome.
+
+SELECT * FROM owners WHERE account_id = 1;
+
+user_id     account_id
+5           1
+
+*/
