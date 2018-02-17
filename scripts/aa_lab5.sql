@@ -167,3 +167,70 @@ id 	from_account_id 	to_account_id 	amount 	note 	            datetime
 2	1	                3	            13337	Transfer text 2!	2018-02-16 08:43:02
 */
 
+
+/* Lab 5 - 5
+Skriv queries för att skapa en procedure, 
+change_ownership(from_user_id, to_user_id, account_id), 
+som byter ägare på ett konto. 
+Använd TRANSACTION och COMMIT så att det inte kan bli fel vid överföringen.
+(OBS! Koden måste kontrollera så att from_user verkligen är ägare till kontot.) 
+Avsluta med ett SELECT @status och låt @status vara meddelande 
+om "Success!" eller "Denied!" som sätts i din procedure. */
+
+/* Usage:
+
+call change_ownership(1, 2, 1); 
+@status
+Success!
+
+SELECT * FROM owners WHERE account_id = 1;
+user_id     account_id
+2           1
+
+call change_ownership(1, 2, 1);
+@status
+Denied!
+
+-- select @status;  works after the call
+
+*/
+
+-- use lab5;
+DROP PROCEDURE IF EXISTS change_ownership;
+DELIMITER //
+CREATE PROCEDURE change_ownership(IN from_user_id SMALLINT, IN to_user_id SMALLINT, IN account_id SMALLINT)
+BEGIN
+    set @status := "Denied!"; -- Result of this procedure
+
+    START TRANSACTION; -- Start of transaction
+
+    -- Check if account really belongs to from_user_id
+    IF ( SELECT user_id from owners o 
+        WHERE o.user_id = from_user_id 
+        AND o.account_id = account_id ) 
+        THEN BEGIN
+            declare own_bef_change SMALLINT;
+            declare own_aft_change SMALLINT;
+
+            -- Gets user_id of account_id before any changes
+            SELECT user_id FROM owners oo WHERE oo.account_id = account_id INTO @own_bef_change;
+
+            -- Update owners info, set account_id owner user_id to to_user_id
+            UPDATE owners ooo SET ooo.user_id = to_user_id WHERE ooo.account_id = account_id;
+
+            -- Get user_id from account_id after updated owner of account
+            SELECT user_id FROM owners oooo WHERE oooo.account_id = account_id INTO @own_aft_change;
+
+            -- If owner of acc before change IS NOT same as after change
+            IF (@own_bef_change <> @own_aft_change) THEN BEGIN
+                SET @status := "Success!";
+            END;
+            END IF;
+        END;
+    END IF; -- End check if account really belongs to from_user_id
+
+    COMMIT; -- End of transaction. Now we commit the transactions to the db.
+
+    SELECT @status; -- "Returns" @status as result. @status Can be used later
+END //
+DELIMITER ;
