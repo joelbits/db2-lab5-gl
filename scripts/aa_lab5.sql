@@ -271,3 +271,14 @@ user_id     account_id
 5           1
 
 */
+
+
+/* Lab 5 - 7
+Skriv queries för att skapa login för tre USERS till MySQL 
+(inte users för tabellerna med accounts):
+a) De tre ska heta: kim, alex, app
+b) Ge alla access (GRANT) så de kan göra SELECT och UPDATE på alla tabeller
+    i DB för denna laboration
+c) Ta bort (REVOKE) så att alex och app inte får göra UPDATE på 
+    users, accounts och owners.
+d) Begränsa så att alex inte får göra mer än 200 queries per timme      */
