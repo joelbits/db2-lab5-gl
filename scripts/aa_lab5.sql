@@ -106,13 +106,14 @@ Varje överföring ska ha en kort anteckning på max 50 tecken och
 dagens datum samt klockslag. Använd TRANSACTION och COMMIT så att det 
 inte kan bli fel vid överföringen. Som sista steg i din procedure ska 
 det göras en SELECT som visar överföringen. */
--- use lab5;
--- TODO: TRANSACTION AND COMMIT!!!
 DROP PROCEDURE IF EXISTS transfer;
 DELIMITER //
 CREATE PROCEDURE transfer(IN inamount INT, IN innote TEXT, IN infrom_account SMALLINT, IN into_account SMALLINT)
 BEGIN
     declare fr_amount int;
+
+    START TRANSACTION;
+
     SELECT amount FROM accounts WHERE id = infrom_account AND amount > inamount INTO fr_amount; 
     if (fr_amount > 0) THEN
         -- Update accounts set amount for TO account
@@ -123,6 +124,11 @@ BEGIN
         -- Update accounts set amount for FROM account
         UPDATE accounts a SET a.amount = (a.amount - inamount) WHERE id = infrom_account;
     end if;
+
+    COMMIT;
+    
+    SELECT * FROM transfers WHERE id = last_insert_id();
+
 END //
 DELIMITER ;
 
@@ -134,7 +140,10 @@ id      amount
 1       136649
 3       9687
 
-call transfer(1337, "Transfer text...", 1, 3);
+call transfer(1337, "Transfer text...", 1, 3)
+returns a new transfer from table transfers:
+id  from_account_id     to_account_id       amount  note                datetime
+1   1                   3                   10000	Transfer text...	2018-02-17 14:31:24	
 
 SELECT * FROM `accounts` WHERE id = 1;
 SELECT * FROM `accounts` WHERE id = 3;
