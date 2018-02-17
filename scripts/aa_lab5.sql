@@ -283,6 +283,15 @@ c) Ta bort (REVOKE) så att alex och app inte får göra UPDATE på
     users, accounts och owners.
 d) Begränsa så att alex inte får göra mer än 200 queries per timme      */
 
+/* For dev: DROP users first. */
+GRANT USAGE ON *.* TO 'kim'@'localhost';
+DROP USER IF EXISTS 'kim'@'localhost';
+GRANT USAGE ON *.* TO 'alex'@'localhost';
+DROP USER IF EXISTS 'alex'@'localhost';
+GRANT USAGE ON *.* TO 'app'@'localhost';
+DROP USER IF EXISTS 'app'@'localhost';
+/* End for dev */
+
 -- a) De tre ska heta: kim, alex, app
 CREATE USER 'kim'@'localhost' IDENTIFIED BY 'badpassword';
 CREATE USER 'alex'@'localhost' IDENTIFIED BY 'badpassword';
@@ -290,16 +299,51 @@ CREATE USER 'app'@'localhost' IDENTIFIED BY 'badpassword';
 
 /* b) Ge alla access (GRANT) så de kan göra SELECT och UPDATE på alla tabeller
         i DB för denna laboration   */
-GRANT SELECT, UPDATE ON lab5.* TO 'kim'@'localhost';
-GRANT SELECT, UPDATE ON lab5.* TO 'alex'@'localhost';
-GRANT SELECT, UPDATE ON lab5.* TO 'app'@'localhost';
+
+GRANT SELECT, UPDATE ON `lab5`.* TO 'kim'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`accounts` TO 'kim'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`owners` TO 'kim'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`transfers` TO 'kim'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`users` TO 'kim'@'localhost';
+
+GRANT SELECT, UPDATE ON `lab5`.* TO 'alex'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`accounts` TO 'alex'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`owners` TO 'alex'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`transfers` TO 'alex'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`users` TO 'alex'@'localhost';
+
+GRANT SELECT, UPDATE ON `lab5`.* TO 'app'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`accounts` TO 'app'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`owners` TO 'app'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`transfers` TO 'app'@'localhost';
+GRANT SELECT, UPDATE ON `lab5`.`users` TO 'app'@'localhost';
 
 /* c) Ta bort (REVOKE) så att alex och app inte får göra UPDATE på 
         users, accounts och owners.     */
-REVOKE UPDATE ON lab5.users USER 'alex'@'localhost';
-REVOKE UPDATE ON lab5.accounts USER 'alex'@'localhost';
-REVOKE UPDATE ON lab5.owners USER 'alex'@'localhost';
+REVOKE UPDATE ON `lab5`.`users` FROM 'alex'@'localhost';
+REVOKE UPDATE ON `lab5`.`accounts` FROM 'alex'@'localhost';
+REVOKE UPDATE ON `lab5`.`owners` FROM 'alex'@'localhost';
 
-REVOKE UPDATE ON lab5.users USER 'app'@'localhost';
-REVOKE UPDATE ON lab5.accounts USER 'app'@'localhost';
-REVOKE UPDATE ON lab5.owners USER 'app'@'localhost';
+REVOKE UPDATE ON `lab5`.`users` FROM 'app'@'localhost';
+REVOKE UPDATE ON `lab5`.`accounts` FROM 'app'@'localhost';
+REVOKE UPDATE ON `lab5`.`owners` FROM 'app'@'localhost';
+
+-- d) Begränsa så att alex inte får göra mer än 200 queries per timme
+ALTER USER 'alex'@'localhost' WITH MAX_QUERIES_PER_HOUR 200;
+
+
+/* Lab 5 - 7 - Usage:
+
+SHOW GRANTS FOR 'alex'@'localhost';
+
+GRANT USAGE ON *.* TO 'alex'@'localhost'	
+GRANT SELECT, UPDATE ON `lab5`.* TO 'alex'@'localhost'	
+GRANT SELECT, UPDATE ON `lab5`.`transfers` TO 'alex'@'localhost'	
+GRANT SELECT ON `lab5`.`users` TO 'alex'@'localhost'	
+GRANT SELECT ON `lab5`.`owners` TO 'alex'@'localhost'	
+GRANT SELECT ON `lab5`.`accounts` TO 'alex'@'localhost'	
+
+SHOW GRANTS FOR 'kim'@'localhost';
+SHOW GRANTS FOR 'app'@'localhost';
+
+*/
