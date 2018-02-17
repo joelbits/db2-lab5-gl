@@ -209,25 +209,25 @@ BEGIN
     IF ( SELECT user_id from owners o 
         WHERE o.user_id = from_user_id 
         AND o.account_id = account_id ) 
-        THEN BEGIN
-            declare own_bef_change SMALLINT;
-            declare own_aft_change SMALLINT;
+    THEN BEGIN
+        declare own_bef_change SMALLINT;
+        declare own_aft_change SMALLINT;
 
-            -- Gets user_id of account_id before any changes
-            SELECT user_id FROM owners oo WHERE oo.account_id = account_id INTO @own_bef_change;
+        -- Gets user_id of account_id before any changes
+        SELECT user_id FROM owners oo WHERE oo.account_id = account_id INTO @own_bef_change;
 
-            -- Update owners info, set account_id owner user_id to to_user_id
-            UPDATE owners ooo SET ooo.user_id = to_user_id WHERE ooo.account_id = account_id;
+        -- Update owners info, set account_id owner user_id to to_user_id
+        UPDATE owners ooo SET ooo.user_id = to_user_id WHERE ooo.account_id = account_id;
 
-            -- Get user_id from account_id after updated owner of account
-            SELECT user_id FROM owners oooo WHERE oooo.account_id = account_id INTO @own_aft_change;
+        -- Get user_id from account_id after updated owner of account
+        SELECT user_id FROM owners oooo WHERE oooo.account_id = account_id INTO @own_aft_change;
 
-            -- If owner of acc before change IS NOT same as after change
-            IF (@own_bef_change <> @own_aft_change) THEN BEGIN
-                SET @status := "Success!";
-            END;
-            END IF;
+        -- If owner of acc before change IS NOT same as after change
+        IF (@own_bef_change <> @own_aft_change) THEN BEGIN
+            SET @status := "Success!";
         END;
+        END IF;
+    END;
     END IF; -- End check if account really belongs to from_user_id
 
     COMMIT; -- End of transaction. Now we commit the transactions to the db.
@@ -238,8 +238,9 @@ DELIMITER ;
 
 
 /* Lab 5 - 6
-Skriv queries för att: (1) starta en transaktion, (2) göra en UPDATE, (3) sätta en SAVEPOINT, 
-(4) göra en UPDATE, (5) göra en ROLLBACK till savepoint, (6) en göra COMMIT. */
+Skriv queries för att: (1) starta en transaktion, (2) göra en UPDATE, 
+(3) sätta en SAVEPOINT, (4) göra en UPDATE, 
+(5) göra en ROLLBACK till savepoint, (6) en göra COMMIT. */
 
 -- (1) starta en transaktion
 START TRANSACTION; -- Auto-commit mode off
@@ -261,7 +262,8 @@ COMMIT;
 
 /* Lab 5 - 6 - Usage:
 
-Above will finally result in the below. Step (4) is rolled-back, hence did not affect the table final outcome.
+Above will finally result in the below. Step (4) is rolled-back, 
+hence did not affect the table final outcome.
 
 SELECT * FROM owners WHERE account_id = 1;
 
