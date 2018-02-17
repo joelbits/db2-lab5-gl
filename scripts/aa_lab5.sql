@@ -294,3 +294,12 @@ GRANT SELECT, UPDATE ON lab5.* TO 'kim'@'localhost';
 GRANT SELECT, UPDATE ON lab5.* TO 'alex'@'localhost';
 GRANT SELECT, UPDATE ON lab5.* TO 'app'@'localhost';
 
+/* c) Ta bort (REVOKE) så att alex och app inte får göra UPDATE på 
+        users, accounts och owners.     */
+REVOKE UPDATE ON lab5.users USER 'alex'@'localhost';
+REVOKE UPDATE ON lab5.accounts USER 'alex'@'localhost';
+REVOKE UPDATE ON lab5.owners USER 'alex'@'localhost';
+
+REVOKE UPDATE ON lab5.users USER 'app'@'localhost';
+REVOKE UPDATE ON lab5.accounts USER 'app'@'localhost';
+REVOKE UPDATE ON lab5.owners USER 'app'@'localhost';
