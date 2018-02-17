@@ -271,3 +271,30 @@ user_id     account_id
 5           1
 
 */
+
+
+/* Lab 5 - 8
+Behöver ej redovisas pga ROLE inte stöds av MySQL 5.x el 4.x
+
+Skriv queries för att skapa roller för att administrera databasen:
+a) De ska heta: db_read (kan bara göra SELECT (alla tabeller i DB), 
+    db_write (kan göra INSERT och UPDATE (alla tabeller i DB), 
+    db_sproc (får köra de sproc som vi implementerat ovan)
+b) Tilldela db_read till Alex, db_write till Kim och db_sproc till app.
+c) Skriv query för att lista rättigheter för Kim.
+d) Skriv query för att lista rättigheter för db_write
+
+
+Lab 5 - 9 - VG
+Skriv queries så att kim får rättigheter att kunna lägga till nya användare 
+och roller för DB samt sätta GRANT och REVOKE för användare och roller.
+
+
+Lab 5 - 10 - VG
+Skriv queries för att skapa en procedure split_account(account_id) som 
+delar upp pengarna på ett konto mellan innehavarna av kontot. 
+Pengarna hamnar på nya konton kopplade till respektive användare genom 
+en transfer med en notering om "Från avslut konto account_id". 
+Om det bara är en ägare ska ingen ändring göras 
+(inget nytt konto, ingen transfer)
+*/
