@@ -118,7 +118,8 @@ BEGIN
         -- Update accounts set amount for TO account
         UPDATE accounts SET amount = amount + inamount WHERE id = into_account;
         -- Add new transfer to transfers table.
-        INSERT INTO transfers (amount, note, from_account_id, to_account_id, datetime)            VALUES (inamount, innote, infrom_account, into_account, TIMESTAMP(NOW()));
+        INSERT INTO transfers (amount, note, from_account_id, to_account_id, datetime) 
+                       VALUES (inamount, innote, infrom_account, into_account, TIMESTAMP(NOW()));
         -- Update accounts set amount for FROM account
         UPDATE accounts a SET a.amount = (a.amount - inamount) WHERE id = infrom_account;
     end if;
