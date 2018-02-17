@@ -282,3 +282,15 @@ b) Ge alla access (GRANT) så de kan göra SELECT och UPDATE på alla tabeller
 c) Ta bort (REVOKE) så att alex och app inte får göra UPDATE på 
     users, accounts och owners.
 d) Begränsa så att alex inte får göra mer än 200 queries per timme      */
+
+-- a) De tre ska heta: kim, alex, app
+CREATE USER 'kim'@'localhost' IDENTIFIED BY 'badpassword';
+CREATE USER 'alex'@'localhost' IDENTIFIED BY 'badpassword';
+CREATE USER 'app'@'localhost' IDENTIFIED BY 'badpassword';
+
+/* b) Ge alla access (GRANT) så de kan göra SELECT och UPDATE på alla tabeller
+        i DB för denna laboration   */
+GRANT SELECT, UPDATE ON lab5.* TO 'kim'@'localhost';
+GRANT SELECT, UPDATE ON lab5.* TO 'alex'@'localhost';
+GRANT SELECT, UPDATE ON lab5.* TO 'app'@'localhost';
+
