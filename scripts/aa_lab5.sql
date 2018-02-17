@@ -283,19 +283,12 @@ c) Ta bort (REVOKE) så att alex och app inte får göra UPDATE på
     users, accounts och owners.
 d) Begränsa så att alex inte får göra mer än 200 queries per timme      */
 
-/* For dev: DROP users first. */
-GRANT USAGE ON *.* TO 'kim'@'localhost';
-DROP USER IF EXISTS 'kim'@'localhost';
-GRANT USAGE ON *.* TO 'alex'@'localhost';
-DROP USER IF EXISTS 'alex'@'localhost';
-GRANT USAGE ON *.* TO 'app'@'localhost';
-DROP USER IF EXISTS 'app'@'localhost';
-/* End for dev */
 
 -- a) De tre ska heta: kim, alex, app
 CREATE USER 'kim'@'localhost' IDENTIFIED BY 'badpassword';
 CREATE USER 'alex'@'localhost' IDENTIFIED BY 'badpassword';
 CREATE USER 'app'@'localhost' IDENTIFIED BY 'badpassword';
+
 
 /* b) Ge alla access (GRANT) så de kan göra SELECT och UPDATE på alla tabeller
         i DB för denna laboration   */
